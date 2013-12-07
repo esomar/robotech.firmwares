@@ -1,0 +1,14 @@
+program Crab_main;
+
+uses
+  Forms,
+  Main in '..\svn\robotech\panzer_win32\Main.pas' {Form1},
+  unComPort in '..\svn\robotech\panzer_win32\unComPort.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

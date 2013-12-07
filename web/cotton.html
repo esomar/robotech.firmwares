@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Cotton web interface</title>
+
+<style type="text/css">
+
+#controlstate{
+width : 320px;
+height: 20px;
+border: black thin solid;
+}
+
+.online{
+background-color : lightgreen;
+}
+
+.offline{
+background-color: #ffaaaa;
+}
+
+.videoretrans {
+background-color: black;
+width: 640px;
+height: 480px;
+border: thin black solid;
+}
+
+.buttons {
+width: 480px;
+height: 40px;
+background-color: gray;
+border: thin black solid;
+}
+
+.button {
+background-color: green;
+border: thin gray solid;
+display: inline-block;
+width: 100px;
+text-align: center;
+cursor: pointer;
+}
+</style>
+</head>
+<script type="text/javascript">
+function createRequestObject() {
+  if (typeof XMLHttpRequest === 'undefined') {
+    XMLHttpRequest = function() {
+      try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); }
+        catch(e) {}
+      try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); }
+        catch(e) {}
+      try { return new ActiveXObject("Msxml2.XMLHTTP"); }
+        catch(e) {}
+      try { return new ActiveXObject("Microsoft.XMLHTTP"); }
+        catch(e) {}
+      throw new Error("This browser does not support XMLHttpRequest.");
+    };
+  }
+  return new XMLHttpRequest();
+}
+
+function sendCommand(command){
+var request = createRequestObject();
+request.open("POST", "/control_cotton.php", true);
+request.onreadystatechange = function (){
+    if (request.readyState == 4){
+          if (request.status == 200) {
+                // do nothing;
+          }
+    }
+  }
+
+var params = "command=" + encodeURIComponent(command);
+request.setRequestHeader('Content-Type', 
+'application/x-www-form-urlencoded')
+request.send(params);
+}
+
+var isonline = true;
+function ontime(){
+// for now, we do nothing here
+//if (isonline)
+//  document.getElementById("controlstate").className = "offline";
+//else
+//  document.getElementById("controlstate").className = "online";
+//isonline = ! isonline;
+}
+
+
+</script>
+<body onload="setInterval(ontime, 500);">
+<div id="controlstate" class="online"> Online </div>
+<div class="videoretrans">
+<img src="/webcam_proxy.php" class="videoretrans"/>
+</div>
+<div class="buttons"> 
+<div class="button" onclick="sendCommand('left');">Left</div>
+<div class="button" onclick="sendCommand('up');">Up</div>
+<div class="button" onclick="sendCommand('right');">Right</div>
+<div class="button" onclick="sendCommand('down');">Down</div>
+<div class="button" onclick="sendCommand('centerh');">Center H</div>
+<div class="button" onclick="sendCommand('centerv');">Center V</div>
+</div>
+
+
+
+</body>
+</html>

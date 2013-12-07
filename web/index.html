@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Radul-robo web interface</title>
+
+<style type="text/css">
+
+#controlstate{
+width : 320px;
+height: 20px;
+border: black thin solid;
+}
+
+.online{
+background-color : lightgreen;
+}
+
+.offline{
+ background-color: #ffaaaa;
+}
+
+.videoretrans {
+background-color: black;
+width: 640px;
+height: 480px;
+border: thin black solid;
+}
+
+.buttons {
+width: 480px;
+height: 40px;
+background-color: gray;
+border: thin black solid;
+}
+
+.button {
+background-color: green;
+border: thin gray solid;
+display: inline-block;
+width: 100px;
+text-align: center;
+cursor: pointer;
+}
+</style>
+</head>
+<script type="text/javascript">
+function createRequestObject() {
+  if (typeof XMLHttpRequest === 'undefined') {
+    XMLHttpRequest = function() {
+      try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); }
+        catch(e) {}
+      try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); }
+        catch(e) {}
+      try { return new ActiveXObject("Msxml2.XMLHTTP"); }
+        catch(e) {}
+      try { return new ActiveXObject("Microsoft.XMLHTTP"); }
+        catch(e) {}
+      throw new Error("This browser does not support XMLHttpRequest.");
+    };
+  }
+  return new XMLHttpRequest();
+}
+
+function sendCommand(command){
+var request = createRequestObject();
+request.open("POST", "/control.php", true);
+request.onreadystatechange = function (){
+    if (request.readyState == 4){
+          if (request.status == 200) {
+                // do nothing;
+          }
+    }
+  }
+
+var params = "command=" + encodeURIComponent(command);
+request.setRequestHeader('Content-Type', 
+'application/x-www-form-urlencoded')
+request.send(params);
+}
+
+var isonline = true;
+function ontime(){
+// for now, we do nothing here
+//if (isonline)
+//  document.getElementById("controlstate").className = "offline";
+//else
+//  document.getElementById("controlstate").className = "online";
+//isonline = ! isonline;
+}
+
+
+</script>
+<body onload="setInterval(ontime, 500);">
+<div id="controlstate" class="online"> Online </div>
+<div class="videoretrans"> 
+<object type="application/x-shockwave-flash" data="http://infxapps.influxis.com/apps/toldbfio4mfmixnr1q2n/faces/faces.swf" width="640" height="480">
+<param name="movie" value="http://infxapps.influxis.com/apps/toldbfio4mfmixnr1q2n/faces/faces.swf"></param>
+<param name="allowFullScreen" value="false"></param>
+<param name="allowscriptaccess" value="always"></param>
+<param name="flashvars" value="rtmp=rtmp://k1zr17a6.rtmphost.com/faces"></param>
+</object>
+</div>
+<div class="videotrans">
+<img src="/webcam_proxy.php"/>
+</div>
+<div class="buttons"> 
+<div class="button" onclick="sendCommand('left');">Left</div>
+<div class="button" onclick="sendCommand('forward');">Forward</div>
+<div class="button" onclick="sendCommand('right');">Right</div>
+<div class="button" onclick="sendCommand('stop');">Stop</div>
+<div class="button" onclick="sendCommand('back');">Back</div>
+</div>
+
+
+
+</body>
+</html>

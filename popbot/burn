@@ -1,0 +1,1 @@
+sudo avrdude -p atmega8 -P /dev/ttyUSB0 -c avr910 -e -Ulfuse:w:lfuse.bin:r  -Uhfuse:w:hfuse.bin:r -Uflash:w:test.bin:r -b 115200
